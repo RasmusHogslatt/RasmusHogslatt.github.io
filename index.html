@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LEGO Mosaic Maker</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <h1>LEGO Mosaic Maker</h1>
+      <p>Create your own LEGO mosaic masterpiece by uploading an image, selecting your brick types and
+        choose your size.</p>
+    </header>
+
+    <div class="content">
+
+      <div class="file-input-container">
+        <input type="file" id="image-upload" accept="image/*">
+        <span class="file-input-button">Choose Image</span>
+      </div>
+      <div class="top-side">
+        <div id="checkboxes">
+          <div class="checkbox-container">
+            <label for="check4x2">
+              <input type="checkbox" id="check4x2" name="brick4x2" checked>
+              <span class="checkbox-checkmark"></span>
+              4x2
+            </label>
+          </div>
+          <div class="checkbox-container">
+            <label for="check2x2">
+              <input type="checkbox" id="check2x2" name="brick2x2" checked>
+              <span class="checkbox-checkmark"></span>
+              2x2
+            </label>
+          </div>
+          <div class="checkbox-container">
+            <label for="check2x1">
+              <input type="checkbox" id="check2x1" name="brick2x1" checked>
+              <span class="checkbox-checkmark"></span>
+              2x1
+            </label>
+          </div>
+        </div>
+
+        <div id="size-slider">
+          <label for="canvas2BrickSize" class="slider-label">Slider: </label>
+          <input type="range" id="canvas2BrickSize" min="32" max="64" value="48" step="16" />
+          <span id="brickSizeValue"></span>
+        </div>
+
+        <button id="legofy-btn">Legofy</button>
+
+      </div>
+
+      <div class="canvases">
+        <canvas id="canvas1" width="500" height="500"></canvas>
+        <div class="canvas2-wrapper">
+          <canvas id="canvas2" width="320" height="320"></canvas>
+        </div>
+      </div>
+      <div id="brick-requirements-container">
+        <h2>Your masterpiece require these pieces</h2>
+        <div id="brick-requirements"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+
+</html>
