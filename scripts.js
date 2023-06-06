@@ -25,6 +25,9 @@ let use4x2 = true;
 let use2x2 = true;
 let use2x1 = true;
 
+const Database = require('better-sqlite3');
+const db = new Database('Company.db');
+
 // const ColorsRGB = [
 //   { r: 255, g: 255, b: 255 },
 //   { r: 0, g: 0, b: 0 },
@@ -623,5 +626,33 @@ function displayBlockRequirements() {
     nBricks += nBricksOfType(i);
     displaySingleBlockRequirements(brickTypes[i], nBricksOfType(i));
   }
+  checkInventory(brickRequirements);
   displaySingleBlockRequirements("Total", nBricks);
+}
+
+function checkInventory(brickRequirements) {
+  // Iterate over each entry in the matrix
+  for (let i = 0; i < brickRequirements.length; i++) {
+      for (let j = 0; j < brickRequirements[i].length; j++) {
+          const requiredQuantity = brickRequirements[i][j];
+
+          if (requiredQuantity > 0) {
+              const color = ColorsRGB[i];
+              const brickType = brickTypes[j];
+
+              // Query the database for the current color and brick type
+              const row = db.prepare('SELECT * FROM lego_inventory WHERE color = ? AND brick_type = ?').get(color, brickType);
+
+              // If the row does not exist, or the quantity is less than required, return false
+              if (!row || row.quantity < requiredQuantity) {
+                console.log('false');
+                  return false;
+              }
+          }
+      }
+  }
+
+  // If we've made it through the entire matrix without returning, we have enough of each brick
+  console.log('true');
+  return true;
 }
