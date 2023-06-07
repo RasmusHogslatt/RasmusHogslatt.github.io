@@ -8,6 +8,12 @@ const check4x2 = document.getElementById('check4x2');
 const check2x2 = document.getElementById('check2x2');
 const check2x1 = document.getElementById('check2x1');
 const legofyBtn = document.getElementById('legofy-btn');
+
+const overlayWidthSlider = document.getElementById('overlayWidth');
+const overlayHeightSlider = document.getElementById('overlayHeight');
+let overlayWidth = overlayWidthSlider.value;
+let overlayHeight = overlayHeightSlider.value;
+
 const ctx1 = canvas1.getContext('2d');
 const ctx2 = canvas2.getContext('2d', { willReadFrequently: true });
 let image = new Image();
@@ -25,8 +31,7 @@ let use4x2 = true;
 let use2x2 = true;
 let use2x1 = true;
 
-const Database = require('better-sqlite3');
-const db = new Database('Company.db');
+
 
 // const ColorsRGB = [
 //   { r: 255, g: 255, b: 255 },
@@ -46,6 +51,7 @@ const db = new Database('Company.db');
 //   { r: 0, g: 86, b: 63 },
 //   { r: 255, g: 128, b: 171 },
 // ];
+// TODO: Read colors from db
 const ColorsRGB = [
   { r: 255, g: 255, b: 255 }, // white
   { r: 0, g: 0, b: 0 }, // black
@@ -178,22 +184,40 @@ legofyBtn.addEventListener('click', () => {
   updateCanvas2();
 });
 
-function drawCanvas1() {
-  ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
-  ctx1.save();
-  ctx1.translate(position.x, position.y);
-  ctx1.scale(scale, scale);
-  ctx1.drawImage(image, 0, 0);
-  ctx1.restore();
+// function drawCanvas1() {
+//   ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+//   ctx1.save();
+//   ctx1.translate(position.x, position.y);
+//   ctx1.scale(scale, scale);
+//   ctx1.drawImage(image, 0, 0);
+//   ctx1.restore();
 
-  // Draw overlay
-  overlaySize = 6 * canvas1Size / 8;
-  overlayPosition.x = (canvas1Size / 8) - 2 * overlayLineWidth;
-  overlayPosition.y = (canvas1Size / 8) - 2 * overlayLineWidth;
-  ctx1.strokeStyle = 'rgba(0, 0, 255, 0.8)';
-  ctx1.overlayLineWidth = overlayLineWidth;
-  ctx1.strokeRect(overlayPosition.x, overlayPosition.y, overlaySize + 2 * overlayLineWidth, overlaySize + 2 * overlayLineWidth);
+//   // Draw overlay
+//   overlaySize = 6 * canvas1Size / 8;
+//   overlayPosition.x = (canvas1Size / 8) - 2 * overlayLineWidth;
+//   overlayPosition.y = (canvas1Size / 8) - 2 * overlayLineWidth;
+//   ctx1.strokeStyle = 'rgba(0, 0, 255, 0.8)';
+//   ctx1.overlayLineWidth = overlayLineWidth;
+//   ctx1.strokeRect(overlayPosition.x, overlayPosition.y, overlaySize + 2 * overlayLineWidth, overlaySize + 2 * overlayLineWidth);
+// }
+function drawCanvas1() {  
+  ctx1.clearRect(0, 0, canvas1.width, canvas1.height);  
+  ctx1.save();  
+  ctx1.translate(position.x, position.y);  
+  ctx1.scale(scale, scale);  
+  ctx1.drawImage(image, 0, 0);  
+  ctx1.restore();  
+
+  // Draw overlay  
+  overlayWidth = overlayWidthSlider.value;
+  overlayHeight = overlayHeightSlider.value;
+  overlayPosition.x = (canvas1Size / 8) - 2 * overlayLineWidth;  
+  overlayPosition.y = (canvas1Size / 8) - 2 * overlayLineWidth;  
+  ctx1.strokeStyle = 'rgba(0, 0, 255, 0.8)';  
+  ctx1.overlayLineWidth = overlayLineWidth;  
+  ctx1.strokeRect(overlayPosition.x, overlayPosition.y, overlayWidth + 2 * overlayLineWidth, overlayHeight + 2 * overlayLineWidth);
 }
+
 function updateChosenImageProperties() {
   brickRequirements = createMatrix(ColorsRGB.length, brickTypes.length, 0);
   colorMatrix = createMatrix(matrixSize, matrixSize, -1);
